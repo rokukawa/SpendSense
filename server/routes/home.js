@@ -3,6 +3,8 @@ import * as homeController from '../controllers/homeController';
 
 const router = express.Router();
 
+router.get('/criar-conta', homeController.getCriarConta);
+
 router.get('/login', homeController.getLogin);
 
 router.get('/', homeController.getHome);

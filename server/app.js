@@ -18,10 +18,13 @@ app.use(helmet());
 app.use(cors());
 app.use(compression());
 
+// dotenv
+require('dotenv').config();
+
 // rotas
 app.use('/', routes.home);
 
-//templates
+// templates
 const path = require('path');
 app.engine('.hbs', engine({
     extname: '.hbs',

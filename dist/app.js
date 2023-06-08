@@ -24,10 +24,13 @@ app.use((0, _helmet.default)());
 app.use((0, _cors.default)());
 app.use((0, _compression.default)());
 
+// dotenv
+require('dotenv').config();
+
 // rotas
 app.use('/', routes.home);
 
-//templates
+// templates
 const path = require('path');
 app.engine('.hbs', (0, _expressHandlebars.engine)({
   extname: '.hbs',

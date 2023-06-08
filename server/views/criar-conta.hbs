@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tela de Login - SpendSense</title>
+  <title>Criar Conta - SpendSense</title>
   <style>
     body {
       background-color: #002c6a;
@@ -30,7 +30,7 @@
       border-radius: 4px;
     }
 
-    .login-form input {
+    .signup-form input {
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
@@ -39,7 +39,7 @@
       font-size: 14px;
     }
 
-    .login-form button {
+    .signup-form button {
       width: 100%;
       padding: 10px;
       background-color: #002c6a;
@@ -50,7 +50,7 @@
       cursor: pointer;
     }
 
-    .login-form a {
+    .signup-form a {
       color: #cbb26b;
       text-decoration: none;
     }
@@ -68,38 +68,6 @@
     .footer a:hover {
       text-decoration: underline;
     }
-
-    .news-block {
-      background-color: #002c6a;
-      color: #cbb26b;
-      padding: 20px;
-      border-radius: 4px;
-    }
-
-    .news-block h2 {
-      font-size: 24px;
-      margin-top: 0;
-    }
-
-    .news-block ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .news-block li {
-      margin-bottom: 10px;
-    }
-
-    .news-block a {
-      color: #cbb26b;
-      text-decoration: none;
-    }
-
-    .news-block a:hover {
-      text-decoration: underline;
-    }
-
   </style>
 </head>
 <body>
@@ -107,16 +75,17 @@
         <div class="logo">
             <img src="images/logo.png" alt="SpendSense Logo">
         </div>
-        <form action="/login" class="login-form">
-            <input type="text" name="email" placeholder="E-mail">
+        <form action="/criar-conta" class="signup-form">
+            <input type="text" name="nome" placeholder="Nome">
+            <input type="email" name="email" placeholder="E-mail">
             <input type="password" name="senha" placeholder="Senha">
             <button type="submit">
-                <a href="/">Entrar</a>            
+                Criar Conta
             </button>
         </form>
         <div class="footer">
-            <p>Não tem uma conta?</p>
-            <a href="/criar-conta">Criar conta</a>
+            <p>Já tem uma conta?</p>
+            <a href="/login">Entrar</a>
         </div>
     </div>
 </body>
