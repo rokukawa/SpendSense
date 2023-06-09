@@ -4,8 +4,10 @@ import * as homeController from '../controllers/homeController';
 const router = express.Router();
 
 router.get('/criar-conta', homeController.getCriarConta);
+router.post('/criar-conta-post',  homeController.postCriarConta);
 
 router.get('/login', homeController.getLogin);
+router.post('/login-post', homeController.postLogin);
 
 router.get('/', homeController.getHome);
 

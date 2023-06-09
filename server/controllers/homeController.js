@@ -1,28 +1,42 @@
 
 // criar conta
-export const getCriarConta = async (req, res, next) => {
+export const getCriarConta = async (req, res, next) => {    
+    res.render('criar-conta')
+}
+
+// criar conta post
+export const postCriarConta = async (req, res, next) => {
     const bd = require('../../db');
     const Usuario = require('../../models/usuario');
     await bd.sync()
 
-    const {nome, email, senha} = req.query
+    const {nome, email, senha} = req.body
 
     // implementar validação de email duplicado
     await Usuario.save(nome, email, senha)
     
-    res.render('criar-conta')
+    res.render('login')
 }
 
 // login
 export const getLogin = async (req, res, next) => {
+    res.render('login')
+}
+
+// login post
+export const postLogin = async (req, res, next) => {
     const bd = require('../../db');
     const Usuario = require('../../models/usuario');
+    const jwt = require("jsonwebtoken")
 
-    const {nome, email, senha} = req.query
+    const {nome, email, senha} = req.body
 
     const result = await Usuario.getByEmail(email)
 
-    res.render('login')
+    if (result){
+        const token = jwt.sign({user: result}, process.env.SECRET, {expiresIn: '1 hr'});
+        res.render('home')
+    }
 }
 
 // home

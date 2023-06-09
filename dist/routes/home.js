@@ -11,7 +11,9 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const router = _express.default.Router();
 router.get('/criar-conta', homeController.getCriarConta);
+router.post('/criar-conta-post', homeController.postCriarConta);
 router.get('/login', homeController.getLogin);
+router.post('/login-post', homeController.postLogin);
 router.get('/', homeController.getHome);
 router.get('/sobre', homeController.getSobre);
 router.get('/ferramentas-tecnologias', homeController.getFerramentasTecnologias);
