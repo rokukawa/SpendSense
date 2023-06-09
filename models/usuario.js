@@ -63,9 +63,11 @@ module.exports = {
         return await UsarioModel.findByPk(id)
     },
 
-    getByEmail: async function(email) {
+    getByEmailSenha: async function(email, senha) {
         return await UsarioModel.findOne({where: {email: {
             [Sequelize.Op.like]: '%' + email + '%'
+        }, senha: {
+            [Sequelize.Op.like]: '%' + senha + '%'
         } }})
     },
 

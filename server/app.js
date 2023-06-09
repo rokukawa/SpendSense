@@ -9,6 +9,12 @@ import * as routes from './routes';
 import { engine } from 'express-handlebars';
 
 const app = express();
+const session = require("express-session")
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.use(logger('dev'));
 app.use(express.json());

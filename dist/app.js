@@ -14,6 +14,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* eslint-disable no-console */
 
 const app = (0, _express.default)();
+const session = require("express-session");
+app.use(session({
+  secret: process && process.env && process.env.SECRET || "web2",
+  resave: false,
+  saveUninitialized: false
+}));
 app.use((0, _morgan.default)('dev'));
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({

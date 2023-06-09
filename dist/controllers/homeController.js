@@ -4,6 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.postLogin = exports.postCriarConta = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getCriarConta = exports.getContato = void 0;
+// função controle de acessos autenticado
+const jwt = require("jsonwebtoken");
+function verifyJWT(req, res) {
+  const token = req.headers['x-access-token'];
+  jwt.verify(token, process && process.env && process.env.SECRET || "web2", (err, decoded) => {
+    if (err) {
+      return res.status(500).redirect('/login');
+    }
+    req.userId = decoded.user;
+    next();
+  });
+}
+
 // criar conta
 const getCriarConta = async (req, res, next) => {
   res.render('criar-conta');
@@ -37,50 +50,65 @@ exports.getLogin = getLogin;
 const postLogin = async (req, res, next) => {
   const bd = require('../../db');
   const Usuario = require('../../models/usuario');
-  const jwt = require("jsonwebtoken");
   const {
     nome,
     email,
     senha
   } = req.body;
-  const result = await Usuario.getByEmail(email);
-  if (result) {
+  const data = await Usuario.getByEmailSenha(email);
+  if (data) {
     const token = jwt.sign({
-      user: result
+      user: data.id
     }, process && process.env && process.env.SECRET || "web2", {
       expiresIn: '1 hr'
     });
-    res.render('home');
+    req.session.status = true;
+    req.session.token = token;
+    res.redirect('/');
+  } else {
+    res.status(403).json({
+      status: false
+    });
   }
 };
 
 // home
 exports.postLogin = postLogin;
 const getHome = (req, res, next) => {
-  res.render('home');
+  verifyJWT(req, res, () => {
+    res.render('home');
+  });
 };
 
 // sobre
 exports.getHome = getHome;
 const getSobre = (req, res, next) => {
-  res.render('sobre');
+  verifyJWT(req, res, () => {
+    res.render('sobre');
+  });
 };
 
 // ferramenta e tecnologia
 exports.getSobre = getSobre;
 const getFerramentasTecnologias = (req, res, next) => {
-  res.render('ferramentas-tecnologias');
+  verifyJWT(req, res, () => {
+    res.render('ferramentas-tecnologias');
+  });
 };
 
 // portfólio
 exports.getFerramentasTecnologias = getFerramentasTecnologias;
 const getPortfolio = (req, res, next) => {
-  res.render('portfolio');
+  verifyJWT(req, res, () => {
+    res.render('portfolio');
+  });
 };
 
 // contato
 exports.getPortfolio = getPortfolio;
 const getContato = (req, res, next) => {
-  res.render('contato');
+  verifyJWT(req, res, () => {
+    res.render('contato');
+  });
 };
 exports.getContato = getContato;
