@@ -55,8 +55,13 @@
                 <strong>Opções</strong>
             </a>
             <ul class="dropdown-menu text-small text-color" aria-labelledby="dropdownUser2">
-                <li><a class="dropdown-item link-warning text-color" href="#">Configurações</a></li>
-                <li><a class="dropdown-item link-warning text-color" href="/login">Sair</a></li>
+                <li>
+                    <form action="/logout" method="POST">
+                        <button class="dropdown-item link-warning text-color" type="submit">
+                            Sair          
+                        </button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

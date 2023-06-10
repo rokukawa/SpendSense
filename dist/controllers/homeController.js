@@ -3,14 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.postLogin = exports.postCriarConta = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getCriarConta = exports.getContato = void 0;
+exports.postLogout = exports.postLogin = exports.postCriarConta = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getCriarConta = exports.getContato = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
-function verifyJWT(req, res) {
-  const token = req.headers['x-access-token'];
+function verifyJWT(req, res, next) {
+  const token = req.session.token;
   jwt.verify(token, process && process.env && process.env.SECRET || "web2", (err, decoded) => {
     if (err) {
-      return res.status(500).redirect('/login');
+      return res.status(500).redirect('login');
     }
     req.userId = decoded.user;
     next();
@@ -18,13 +18,13 @@ function verifyJWT(req, res) {
 }
 
 // criar conta
-const getCriarConta = async (req, res, next) => {
+const getCriarConta = async (req, res) => {
   res.render('criar-conta');
 };
 
 // criar conta post
 exports.getCriarConta = getCriarConta;
-const postCriarConta = async (req, res, next) => {
+const postCriarConta = async (req, res) => {
   const bd = require('../../db');
   const Usuario = require('../../models/usuario');
   await bd.sync();
@@ -41,22 +41,21 @@ const postCriarConta = async (req, res, next) => {
 
 // login
 exports.postCriarConta = postCriarConta;
-const getLogin = async (req, res, next) => {
+const getLogin = async (req, res) => {
   res.render('login');
 };
 
 // login post
 exports.getLogin = getLogin;
-const postLogin = async (req, res, next) => {
-  const bd = require('../../db');
+const postLogin = async (req, res) => {
   const Usuario = require('../../models/usuario');
   const {
     nome,
     email,
     senha
   } = req.body;
-  const data = await Usuario.getByEmailSenha(email);
-  if (data) {
+  const data = await Usuario.getByEmailSenha(email, senha);
+  if (data != null) {
     const token = jwt.sign({
       user: data.id
     }, process && process.env && process.env.SECRET || "web2", {
@@ -66,15 +65,21 @@ const postLogin = async (req, res, next) => {
     req.session.token = token;
     res.redirect('/');
   } else {
-    res.status(403).json({
-      status: false
-    });
+    res.redirect('/login');
   }
 };
 
-// home
+// logout
 exports.postLogin = postLogin;
-const getHome = (req, res, next) => {
+const postLogout = (req, res) => {
+  req.session.status = false;
+  req.session.token = '';
+  res.redirect('/login');
+};
+
+// home
+exports.postLogout = postLogout;
+const getHome = (req, res) => {
   verifyJWT(req, res, () => {
     res.render('home');
   });
@@ -82,7 +87,7 @@ const getHome = (req, res, next) => {
 
 // sobre
 exports.getHome = getHome;
-const getSobre = (req, res, next) => {
+const getSobre = (req, res) => {
   verifyJWT(req, res, () => {
     res.render('sobre');
   });
@@ -90,7 +95,7 @@ const getSobre = (req, res, next) => {
 
 // ferramenta e tecnologia
 exports.getSobre = getSobre;
-const getFerramentasTecnologias = (req, res, next) => {
+const getFerramentasTecnologias = (req, res) => {
   verifyJWT(req, res, () => {
     res.render('ferramentas-tecnologias');
   });
@@ -98,7 +103,7 @@ const getFerramentasTecnologias = (req, res, next) => {
 
 // portfólio
 exports.getFerramentasTecnologias = getFerramentasTecnologias;
-const getPortfolio = (req, res, next) => {
+const getPortfolio = (req, res) => {
   verifyJWT(req, res, () => {
     res.render('portfolio');
   });
@@ -106,7 +111,7 @@ const getPortfolio = (req, res, next) => {
 
 // contato
 exports.getPortfolio = getPortfolio;
-const getContato = (req, res, next) => {
+const getContato = (req, res) => {
   verifyJWT(req, res, () => {
     res.render('contato');
   });

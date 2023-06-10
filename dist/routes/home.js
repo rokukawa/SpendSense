@@ -14,6 +14,7 @@ router.get('/criar-conta', homeController.getCriarConta);
 router.post('/criar-conta', homeController.postCriarConta);
 router.get('/login', homeController.getLogin);
 router.post('/login', homeController.postLogin);
+router.post('/logout', homeController.postLogout);
 router.get('/', homeController.getHome);
 router.get('/sobre', homeController.getSobre);
 router.get('/ferramentas-tecnologias', homeController.getFerramentasTecnologias);
