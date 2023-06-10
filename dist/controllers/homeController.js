@@ -3,44 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.postLogout = exports.postLogin = exports.postCriarConta = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getCriarConta = exports.getContato = void 0;
+exports.postLogout = exports.postLogin = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getContato = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
-function verifyJWT(req, res, next) {
-  const token = req.session.token;
-  jwt.verify(token, process && process.env && process.env.SECRET || "web2", (err, decoded) => {
-    if (err) {
-      return res.status(500).redirect('login');
-    }
-    req.userId = decoded.user;
-    next();
-  });
-}
-
-// criar conta
-const getCriarConta = async (req, res) => {
-  res.render('criar-conta');
-};
-
-// criar conta post
-exports.getCriarConta = getCriarConta;
-const postCriarConta = async (req, res) => {
-  const bd = require('../../db');
-  const Usuario = require('../../models/usuario');
-  await bd.sync();
-  const {
-    nome,
-    email,
-    senha
-  } = req.body;
-
-  // implementar validação de email duplicado
-  await Usuario.save(nome, email, senha);
-  res.render('login');
-};
 
 // login
-exports.postCriarConta = postCriarConta;
 const getLogin = async (req, res) => {
   res.render('login');
 };
@@ -80,40 +47,30 @@ const postLogout = (req, res) => {
 // home
 exports.postLogout = postLogout;
 const getHome = (req, res) => {
-  verifyJWT(req, res, () => {
-    res.render('home');
-  });
+  res.render('home');
 };
 
 // sobre
 exports.getHome = getHome;
 const getSobre = (req, res) => {
-  verifyJWT(req, res, () => {
-    res.render('sobre');
-  });
+  res.render('sobre');
 };
 
 // ferramenta e tecnologia
 exports.getSobre = getSobre;
 const getFerramentasTecnologias = (req, res) => {
-  verifyJWT(req, res, () => {
-    res.render('ferramentas-tecnologias');
-  });
+  res.render('ferramentas-tecnologias');
 };
 
 // portfólio
 exports.getFerramentasTecnologias = getFerramentasTecnologias;
 const getPortfolio = (req, res) => {
-  verifyJWT(req, res, () => {
-    res.render('portfolio');
-  });
+  res.render('portfolio');
 };
 
 // contato
 exports.getPortfolio = getPortfolio;
 const getContato = (req, res) => {
-  verifyJWT(req, res, () => {
-    res.render('contato');
-  });
+  res.render('contato');
 };
 exports.getContato = getContato;

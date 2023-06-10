@@ -35,6 +35,7 @@ require('dotenv').config();
 
 // rotas
 app.use('/', routes.home);
+app.use('/', routes.usuario);
 
 // templates
 const path = require('path');
