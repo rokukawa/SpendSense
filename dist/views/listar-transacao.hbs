@@ -1,0 +1,42 @@
+{{>dashboard}}
+
+<style>
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+</style>
+
+<div class="col col-lg-5" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3" style="max-width: 58rem;">
+        <div class="card-header text-color">Transação</div>
+        
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-color">#</th>
+                        <th scope="col" class="text-color">Data</th>
+                        <th scope="col" class="text-color">Valor</th>
+                        <th scope="col" class="text-color">Descrição</th>
+                        <th scope="col" class="text-color">Categoria</th>
+                    </tr>
+                </thead>                
+                <tbody class="thead-dark">
+                    {{#each data}}
+                        <tr>
+                            <td scope="row" class="text-color"> - </th>
+                            <td class="text-color"> {{ data }} </td>
+                            <td class="text-color"> {{ valor }} </td>
+                            <td class="text-color"> {{ descricao }} </td>
+                            <td class="text-color"> {{ categoria }} </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

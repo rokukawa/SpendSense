@@ -6,16 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.postEditarUsuario = exports.postCriarUsuario = exports.getEditarUsuario = exports.getCriarUsuario = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
-function verifyJWT(req, res, next) {
-  const token = req.session.token;
-  jwt.verify(token, process && process.env && process.env.SECRET || "web2", (err, decoded) => {
-    if (err) {
-      return res.status(500).redirect('login');
-    }
-    req.userId = decoded.user;
-    next();
-  });
-}
 
 // criar usuario
 const getCriarUsuario = async (req, res) => {
@@ -26,6 +16,8 @@ const getCriarUsuario = async (req, res) => {
 exports.getCriarUsuario = getCriarUsuario;
 const postCriarUsuario = async (req, res) => {
   const Usuario = require('../../models/usuario');
+  const sequelize = require('../../db');
+  await sequelize.sync();
   const {
     nome,
     email,

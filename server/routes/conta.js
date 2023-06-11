@@ -1,5 +1,5 @@
 import express from 'express';
-import * as transacaoController from '../controllers/transacaoController';
+import * as contaController from '../controllers/contaController';
 
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
@@ -18,10 +18,9 @@ function verifyJWT (req, res, next){
 
 const router = express.Router();
 
-router.get('/criar-transacao', verifyJWT, transacaoController.getCriarTransacao);
+router.get('/criar-conta', verifyJWT, contaController.getCriarConta);
 
-router.post('/criar-transacao', transacaoController.postCriarTransacao);
+router.post('/criar-conta', contaController.postCriarConta);
 
-router.get('/listar-transacao', verifyJWT, transacaoController.getListarTransacao);
 
 export default router;

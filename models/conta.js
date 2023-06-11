@@ -11,7 +11,7 @@ const ContaModel = db.define('conta', {
     },
     nome_conta: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: false
     },
     tipo_conta: {
         type: Sequelize.STRING,
@@ -27,10 +27,7 @@ const ContaModel = db.define('conta', {
     }
 })
 
-ContaModel.belongsTo(Usuario.Model, {
-    foreignKey: 'usuario'
-})
-Usuario.Model.hasMany(ContaModel, {foreignKey: 'usuario'})
+ContaModel.belongsTo(Usuario.Model, {foreignKey: 'usuario'})
 
 module.exports = {
     list: async function() {
@@ -38,12 +35,13 @@ module.exports = {
         return conta
     },
     
-    save: async function(nome_conta, tipo_conta, saldo, data_criacao) {
+    save: async function(nome_conta, tipo_conta, saldo, data_criacao, usuario) {
         const conta = await ContaModel.create({
             nome_conta: nome_conta,
             tipo_conta: tipo_conta,
             saldo: saldo,
-            data_criacao: data_criacao
+            data_criacao: data_criacao,
+            usuario: usuario
         })
         
         return conta
@@ -71,10 +69,12 @@ module.exports = {
         return await ContaModel.findByPk(id)
     },
 
+    getByUsuario: async function(usuario) {
+        return await ContaModel.findAll({where: { usuario: usuario }})
+    },
+
     getByConta: async function(conta) {
-        return await ContaModel.findOne({where: {conta: {
-            [Sequelize.Op.like]: '%' + conta + '%'
-        } }})
+        return await ContaModel.findAll({where: { conta: conta }})
     },
 
     Model: ContaModel

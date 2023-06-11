@@ -14,6 +14,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* eslint-disable no-console */
 
 const app = (0, _express.default)();
+
+// session
 const session = require("express-session");
 app.use(session({
   secret: process && process.env && process.env.SECRET || "web2",
@@ -36,6 +38,8 @@ require('dotenv').config();
 // rotas
 app.use('/', routes.home);
 app.use('/', routes.usuario);
+app.use('/', routes.transacao);
+app.use('/', routes.conta);
 
 // templates
 const path = require('path');

@@ -1,0 +1,52 @@
+{{>dashboard}}
+
+<style>
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+</style>
+
+<div class="col col-lg-5" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3" style="max-width: 58rem;">
+        <div class="card-header text-color">Transação</div>
+        <div class="card-body">
+            <form action="/criar-transacao" method="post">
+                <div class="form-group">
+                    <label for="data" class="text-color">Data:</label>
+                    <input type="date" class="form-control" id="data" name="data">
+                </div>
+                <div class="form-group">
+                    <label for="valor" class="text-color">Valor:</label>
+                    <input type="number" class="form-control" id="valor" name="valor" step="0.01" placeholder="Digite o valor da transação">
+                </div>
+                <div class="form-group">
+                    <label for="descricao" class="text-color">Descrição:</label>
+                    <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Digite a descrição da transação">
+                </div>
+                <div class="form-group">
+                    <label for="categoria" class="text-color">Categoria:</label>
+                    <select class="form-control" id="categoria" name="categoria">
+                        <option value="mercado"> Mercado </option>
+                        <option value="compra_onlin"> Compra online </option>
+                        <option value="transacao"> Transação </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="conta" class="text-color">Conta Bancária:</label>
+                    <select class="form-control" id="conta" name="conta">
+                        {{#each usuario}}
+                            <option value={{ id }}> {{ nome_conta }} </option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn" style="background-color: #cbb26b;color: #002c6a; margin-top: 20px;">Adicionar Transação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

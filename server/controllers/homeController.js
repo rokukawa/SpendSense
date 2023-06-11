@@ -14,11 +14,7 @@ export const postLogin = async (req, res) => {
     const data = await Usuario.getByEmailSenha(email, senha)
 
     if (data != null){
-        const token = jwt.sign(
-            {user: data.id}, 
-            process.env.SECRET, 
-            {expiresIn: '1 hr'}
-        );
+        const token = jwt.sign({user: data.id}, process.env.SECRET, {expiresIn: '1 hr'});
 
         req.session.status = true;
         req.session.token = token;

@@ -27,10 +27,7 @@ const TransacaoModel = db.define('transacao', {
     }
 })
 
-TransacaoModel.belongsTo(Conta.Model, {
-    foreignKey: 'conta'
-})
-Usuario.Model.hasMany(TransacaoModel, {foreignKey: 'conta'})
+TransacaoModel.belongsTo(Conta.Model, {foreignKey: 'conta'})
 
 module.exports = {
     list: async function() {
@@ -38,12 +35,13 @@ module.exports = {
         return transacao
     },
     
-    save: async function(data_transacao, valor, descricao, categoria) {
+    save: async function(data_transacao, valor, descricao, categoria, conta) {
         const transacao = await TransacaoModel.create({
             data_transacao: data_transacao,
             valor: valor,
             descricao: descricao,
-            categoria: categoria
+            categoria: categoria,
+            conta: conta
         })
         
         return transacao
@@ -71,9 +69,9 @@ module.exports = {
         return await TransacaoModel.findByPk(id)
     },
 
-    getByConta: async function(transacao) {
-        return await TransacaoModel.findOne({where: {transacao: {
-            [Sequelize.Op.like]: '%' + transacao + '%'
+    getByConta: async function(contas) {
+        return await TransacaoModel.findAll({where: {conta: {
+            [Sequelize.Op.in]: contas
         } }})
     },
 

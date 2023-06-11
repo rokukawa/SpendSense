@@ -9,6 +9,8 @@ import * as routes from './routes';
 import { engine } from 'express-handlebars';
 
 const app = express();
+
+// session
 const session = require("express-session")
 app.use(session({
     secret: process.env.SECRET,
@@ -30,6 +32,8 @@ require('dotenv').config();
 // rotas
 app.use('/', routes.home);
 app.use('/', routes.usuario);
+app.use('/', routes.transacao);
+app.use('/', routes.conta);
 
 // templates
 const path = require('path');

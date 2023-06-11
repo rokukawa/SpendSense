@@ -1,18 +1,6 @@
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
 
-function verifyJWT (req, res, next){
-    const token = req.session.token;
-    
-    jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if(err){
-            return res.status(500).redirect('login')
-        }
-        req.userId = decoded.user;
-        next();
-    })
-}
-
 // criar usuario
 export const getCriarUsuario = async (req, res) => {    
     res.render('criar-usuario')
@@ -21,6 +9,8 @@ export const getCriarUsuario = async (req, res) => {
 // criar usuario post
 export const postCriarUsuario = async (req, res) => {
     const Usuario = require('../../models/usuario');
+    const sequelize = require('../../db');
+    await sequelize.sync()
 
     const {nome, email, senha} = req.body
 
