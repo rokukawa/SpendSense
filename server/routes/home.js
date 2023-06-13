@@ -26,12 +26,12 @@ router.post('/logout', homeController.postLogout);
 
 router.get('/', verifyJWT, homeController.getHome);
 
-router.get('/sobre', verifyJWT, homeController.getSobre);
+router.get('/sobre', homeController.getSobre);
 
-router.get('/ferramentas-tecnologias', verifyJWT, homeController.getFerramentasTecnologias);
+router.get('/ferramentas-tecnologias', homeController.getFerramentasTecnologias);
 
-router.get('/portfolio', verifyJWT, homeController.getPortfolio);
+router.get('/portfolio', homeController.getPortfolio);
 
-router.get('/contato', verifyJWT, homeController.getContato);
+router.get('/contato', homeController.getContato);
 
 export default router;
