@@ -47,13 +47,12 @@ module.exports = {
         return conta
     },
 
-    update: async function(id, nome_conta, tipo_conta, saldo, data_criacao) {
+    update: async function(id, nome_conta, tipo_conta, saldo) {
         return await ContaModel.update(
             {
                 nome_conta: nome_conta, 
                 tipo_conta: tipo_conta, 
-                saldo: saldo, 
-                data_criacao: data_criacao
+                saldo: saldo
             }, 
             {
                 where: {id: id}

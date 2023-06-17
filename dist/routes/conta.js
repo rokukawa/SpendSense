@@ -24,15 +24,16 @@ function verifyJWT(req, res, next) {
 const router = _express.default.Router();
 
 // API REST
-router.get('/conta', contaController.getConta);
+router.get('/conta/:usuario', contaController.getConta);
 router.post('/conta/criar', contaController.postConta);
-router.put('/conta/editar', contaController.putConta);
-router.delete('/conta/deletar', contaController.deleteConta);
+router.put('/conta/editar/:usuario/:nome_conta/:tipo_conta/:saldo', contaController.putConta);
+router.delete('/conta/deletar/:usuario', contaController.deleteConta);
 // router.get('/conta/gerar', verifyJWT, contaController.getCriarConta);
 
 // API CLIENTE
 router.get('/criar-conta', verifyJWT, contaController.getCriarConta);
 router.post('/criar-conta', verifyJWT, contaController.postCriarConta);
-// router.get('/listar-conta', verifyJWT, contaController.getListarConta);
+router.get('/listar-conta', verifyJWT, contaController.getListarConta);
+router.post('/listar-conta', verifyJWT, contaController.postListarConta);
 var _default = router;
 exports.default = _default;

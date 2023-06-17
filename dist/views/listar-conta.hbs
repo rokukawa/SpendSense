@@ -28,9 +28,10 @@
                     {{#each data}}
                         <form action="/listar-conta" method="POST" id="contactForm" name="contactForm">
                             <tr>
-                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="data" id="data" value={{ nome_conta }}></td>
-                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="descricao" id="descricao" value={{ tipo_conta }}></td>
-                               <td class="text-color"><input readonly="true" type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="id" id="id" value={{ saldo }}></td>
+                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="nome_conta" id="nome_conta" value={{ nome_conta }}></td>
+                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="tipo_conta" id="tipo_conta" value={{ tipo_conta }}></td>
+                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="saldo" id="saldo" value={{ saldo }}></td>
+                                <td class="text-color"><input readonly="true" type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="id" id="id" value={{id }}></td>
                                 <td>
                                     <div class="row justify-content-center">
                                         <div class="col-md-5 form-group text-center">

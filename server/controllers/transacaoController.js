@@ -6,8 +6,10 @@ const jwt = require("jsonwebtoken");
 export const getTransacao = async (req, res) => {   
     const Conta = require('../../models/conta');
     const Transacao = require('../../models/transacao');
-    const token = jwt.decode(req.session.token);
-    const obj = await Conta.getByUsuario(token.user)
+
+    const id = req.body.id
+
+    const obj = await Conta.getByUsuario(id)
     
     let contas = []
     obj.forEach(obj => {
@@ -37,7 +39,6 @@ export const postTransacao = async (req, res) => {
 export const putTransacao = async (req, res) => {   
     const Transacao = require('../../models/transacao');
     
-    const token = jwt.decode(req.session.token)
     const {data, valor, descricao, categoria, id} = req.body
 
     let obj = await Transacao.update(id, data, valor, descricao, categoria)
@@ -53,7 +54,6 @@ export const putTransacao = async (req, res) => {
 export const deleteTransacao = async (req, res) => {   
     const Transacao = require('../../models/transacao');
     
-    const token = jwt.decode(req.session.token)
     const {id} = req.body
 
     let obj = await Transacao.delete(id)

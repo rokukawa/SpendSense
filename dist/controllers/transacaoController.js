@@ -12,8 +12,8 @@ const jwt = require("jsonwebtoken");
 const getTransacao = async (req, res) => {
   const Conta = require('../../models/conta');
   const Transacao = require('../../models/transacao');
-  const token = jwt.decode(req.session.token);
-  const obj = await Conta.getByUsuario(token.user);
+  const id = req.body.id;
+  const obj = await Conta.getByUsuario(id);
   let contas = [];
   obj.forEach(obj => {
     contas.push(obj.dataValues.id);
@@ -54,7 +54,6 @@ const postTransacao = async (req, res) => {
 exports.postTransacao = postTransacao;
 const putTransacao = async (req, res) => {
   const Transacao = require('../../models/transacao');
-  const token = jwt.decode(req.session.token);
   const {
     data,
     valor,
@@ -79,7 +78,6 @@ const putTransacao = async (req, res) => {
 exports.putTransacao = putTransacao;
 const deleteTransacao = async (req, res) => {
   const Transacao = require('../../models/transacao');
-  const token = jwt.decode(req.session.token);
   const {
     id
   } = req.body;
