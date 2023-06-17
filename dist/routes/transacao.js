@@ -15,7 +15,7 @@ function verifyJWT(req, res, next) {
   const token = req.session.token;
   jwt.verify(token, process && process.env && process.env.SECRET || "web2", (err, decoded) => {
     if (err) {
-      return res.status(500).redirect('login');
+      return res.status(500).redirect('/login');
     }
     req.userId = decoded.user;
     next();
@@ -23,17 +23,17 @@ function verifyJWT(req, res, next) {
 }
 const router = _express.default.Router();
 
-// API REST transação
+// API REST
 router.get('/transacao', verifyJWT, transacaoController.getTransacao);
 router.post('/transacao/criar', verifyJWT, transacaoController.postTransacao);
 router.put('/transacao/editar', verifyJWT, transacaoController.putTransacao);
 router.delete('/transacao/deletar', verifyJWT, transacaoController.deleteTransacao);
 // router.get('/transacao/gerar', transacaoController.getGerarTransacao);
 
-// front
+// API CLIENTE
 router.get('/criar-transacao', verifyJWT, transacaoController.getCriarTransacao);
 router.post('/criar-transacao', transacaoController.postCriarTransacao);
 router.get('/listar-transacao', verifyJWT, transacaoController.getListarTransacao);
-router.post('/editar-excluir-transacao', transacaoController.postEditarExcluirTransacao);
+router.post('/listar-transacao', transacaoController.postEditarExcluirTransacao);
 var _default = router;
 exports.default = _default;

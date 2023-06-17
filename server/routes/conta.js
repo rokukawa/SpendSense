@@ -9,7 +9,7 @@ function verifyJWT (req, res, next){
     
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if(err){
-            return res.status(500).redirect('login')
+            return res.status(500).redirect('/login')
         }
         req.userId = decoded.user;
         next();
@@ -19,14 +19,15 @@ function verifyJWT (req, res, next){
 const router = express.Router();
 
 // API REST
-router.get('/conta', verifyJWT, contaController.getConta);
-router.post('/conta/criar', verifyJWT, contaController.postConta);
-router.put('/conta/editar', verifyJWT, contaController.putConta);
-router.delete('/conta/deletar', verifyJWT, contaController.deleteConta);
+router.get('/conta', contaController.getConta);
+router.post('/conta/criar', contaController.postConta);
+router.put('/conta/editar', contaController.putConta);
+router.delete('/conta/deletar', contaController.deleteConta);
 // router.get('/conta/gerar', verifyJWT, contaController.getCriarConta);
 
 // API CLIENTE
 router.get('/criar-conta', verifyJWT, contaController.getCriarConta);
-router.post('/criar-conta', contaController.postCriarConta);
+router.post('/criar-conta', verifyJWT, contaController.postCriarConta);
+// router.get('/listar-conta', verifyJWT, contaController.getListarConta);
 
 export default router;

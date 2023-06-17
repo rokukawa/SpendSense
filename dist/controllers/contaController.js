@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.putConta = exports.postCriarConta = exports.postConta = exports.getCriarConta = exports.getConta = exports.deleteConta = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
+const axios = require('axios');
 
 // API REST
 // Listar
 const getConta = async (req, res) => {
   const Conta = require('../../models/conta');
-  const token = jwt.decode(req.session.token);
   const obj = await Conta.getByUsuario(token.user);
   if (obj[0] == 0) {
     return res.json({
@@ -35,12 +35,12 @@ const postConta = async (req, res) => {
     nome_conta,
     tipo_conta,
     saldo,
-    data_criacao
+    data_criacao,
+    id
   } = req.body;
-  const token = jwt.decode(req.session.token);
   res.json({
     status: true,
-    transacao: await Conta.save(nome_conta, tipo_conta, saldo, data_criacao, token.user)
+    conta: await Conta.save(nome_conta, tipo_conta, saldo, data_criacao, id)
   });
 };
 
@@ -89,27 +89,34 @@ const deleteConta = async (req, res) => {
 };
 
 // API CLIENTE
-// criar conta
+// criar conta 
 exports.deleteConta = deleteConta;
 const getCriarConta = async (req, res) => {
   res.render('criar-conta');
 };
 
-// criar conta post
+// criar conta
 exports.getCriarConta = getCriarConta;
 const postCriarConta = async (req, res) => {
-  const Conta = require('../../models/conta');
-  const Usuario = require('../../models/usuario');
-  const sequelize = require('../../db');
-  await sequelize.sync();
-  const token = jwt.decode(req.session.token);
   const {
     nome_conta,
-    categoria,
+    tipo_conta,
     saldo,
     data_criacao
   } = req.body;
-  await Conta.save(nome_conta, categoria, saldo, data_criacao, token.user);
-  res.render('home');
+  const token = jwt.decode(req.session.token);
+  const id = token.user;
+  try {
+    const response = await axios.post("http://localhost:3001/conta/criar", {
+      nome_conta,
+      tipo_conta,
+      saldo,
+      data_criacao,
+      id
+    });
+    res.render('home');
+  } catch (error) {
+    console.log(error.response.data);
+  }
 };
 exports.postCriarConta = postCriarConta;

@@ -1,11 +1,11 @@
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
+const axios = require('axios');
 
 // API REST
 // Listar
 export const getConta = async (req, res) => {    
     const Conta = require('../../models/conta');
-    const token = jwt.decode(req.session.token);
     const obj = await Conta.getByUsuario(token.user)
 
     if (obj[0] == 0) {
@@ -21,11 +21,9 @@ export const postConta = async (req, res) => {
     const sequelize = require('../../db');
     await sequelize.sync()
 
-    const {nome_conta, tipo_conta, saldo, data_criacao} = req.body
+    const {nome_conta, tipo_conta, saldo, data_criacao, id} = req.body
 
-    const token = jwt.decode(req.session.token)
-
-    res.json({status: true, transacao: await Conta.save(nome_conta, tipo_conta, saldo, data_criacao, token.user)})
+    res.json({status: true, conta: await Conta.save(nome_conta, tipo_conta, saldo, data_criacao, id)})
 }
 
 // Editar
@@ -60,23 +58,30 @@ export const deleteConta = async (req, res) => {
 
 
 // API CLIENTE
-// criar conta
+// criar conta 
 export const getCriarConta = async (req, res) => {    
     res.render('criar-conta')
 }
 
-// criar conta post
+// criar conta
 export const postCriarConta = async (req, res) => {
-    const Conta = require('../../models/conta');
-    const Usuario = require('../../models/usuario');
-    const sequelize = require('../../db');
-    await sequelize.sync()
+    const { nome_conta, tipo_conta, saldo, data_criacao } = req.body;
+    const token = jwt.decode(req.session.token);
 
-    const token = jwt.decode(req.session.token)
+    const id = token.user
 
-    const {nome_conta, categoria, saldo, data_criacao} = req.body
-
-    await Conta.save(nome_conta, categoria, saldo, data_criacao, token.user)
-
-    res.render('home')
-}
+    try {
+        const response = await axios.post("http://localhost:3001/conta/criar", 
+            {
+                nome_conta,
+                tipo_conta,
+                saldo,
+                data_criacao,
+                id
+            }
+        );
+        res.render('home');
+    } catch (error) {
+        console.log(error.response.data);
+    }
+};

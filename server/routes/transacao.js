@@ -9,7 +9,7 @@ function verifyJWT (req, res, next){
     
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if(err){
-            return res.status(500).redirect('login')
+            return res.status(500).redirect('/login')
         }
         req.userId = decoded.user;
         next();
@@ -18,18 +18,18 @@ function verifyJWT (req, res, next){
 
 const router = express.Router();
 
-// API REST transação
+// API REST
 router.get('/transacao', verifyJWT, transacaoController.getTransacao);
 router.post('/transacao/criar', verifyJWT, transacaoController.postTransacao);
 router.put('/transacao/editar', verifyJWT, transacaoController.putTransacao);
 router.delete('/transacao/deletar', verifyJWT, transacaoController.deleteTransacao);
 // router.get('/transacao/gerar', transacaoController.getGerarTransacao);
 
-// front
+// API CLIENTE
 router.get('/criar-transacao', verifyJWT, transacaoController.getCriarTransacao);
 router.post('/criar-transacao', transacaoController.postCriarTransacao);
 router.get('/listar-transacao', verifyJWT, transacaoController.getListarTransacao);
-router.post('/editar-excluir-transacao', transacaoController.postEditarExcluirTransacao);
+router.post('/listar-transacao', transacaoController.postEditarExcluirTransacao);
 
 
 export default router;

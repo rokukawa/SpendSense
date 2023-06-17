@@ -9,7 +9,7 @@ function verifyJWT (req, res, next){
     
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if(err){
-            return res.status(500).redirect('login')
+            return res.status(500).redirect('/login')
         }
         req.userId = decoded.user;
         next();

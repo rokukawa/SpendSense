@@ -15,7 +15,7 @@ function verifyJWT(req, res, next) {
   const token = req.session.token;
   jwt.verify(token, process && process.env && process.env.SECRET || "web2", (err, decoded) => {
     if (err) {
-      return res.status(500).redirect('login');
+      return res.status(500).redirect('/login');
     }
     req.userId = decoded.user;
     next();
