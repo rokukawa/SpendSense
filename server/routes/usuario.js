@@ -18,12 +18,18 @@ function verifyJWT (req, res, next){
 
 const router = express.Router();
 
+// API REST
+router.get('/usuario', usuarioController.getUsuario);
+router.post('/usuario/criar', usuarioController.postUsuario);
+router.put('/usuario/editar', verifyJWT, usuarioController.putUsuario);
+router.delete('/usuario/deletar', verifyJWT, usuarioController.deleteUsuario);
+// router.get('/usuario/gerar', usuarioController.getCriarUsuario);
+
+
+// API CLIENTE
 router.get('/criar-usuario', usuarioController.getCriarUsuario);
-
 router.post('/criar-usuario',  usuarioController.postCriarUsuario);
-
 router.get('/editar-usuario', verifyJWT, usuarioController.getEditarUsuario);
-
-router.post('/editar-usuario',  usuarioController.postEditarUsuario);
+router.post('/editar-excluir-usuario',  usuarioController.postEditarExcluirUsuario);
 
 export default router;

@@ -18,9 +18,15 @@ function verifyJWT (req, res, next){
 
 const router = express.Router();
 
+// API REST
+router.get('/conta', verifyJWT, contaController.getConta);
+router.post('/conta/criar', verifyJWT, contaController.postConta);
+router.put('/conta/editar', verifyJWT, contaController.putConta);
+router.delete('/conta/deletar', verifyJWT, contaController.deleteConta);
+// router.get('/conta/gerar', verifyJWT, contaController.getCriarConta);
+
+// API CLIENTE
 router.get('/criar-conta', verifyJWT, contaController.getCriarConta);
-
 router.post('/criar-conta', contaController.postCriarConta);
-
 
 export default router;

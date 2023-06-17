@@ -1,6 +1,69 @@
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
 
+// API REST
+// Lista
+export const getUsuario = async (req, res) => {  
+    const Usuario = require('../../models/usuario');
+    const token = jwt.decode(req.session.token);
+
+    const {email, senha} = req.body
+
+    const obj = await Usuario.getByEmailSenha(email, senha)
+
+    if (!obj) {
+        return res.json({status: false, msg: "Conta não encontrada."})
+    }
+
+    return res.json({status: true, conta: obj})  
+}
+
+// Criar
+export const postUsuario = async (req, res) => {   
+    const Usuario = require('../../models/usuario');
+    const sequelize = require('../../db');
+    await sequelize.sync()
+
+    const {nome, email, senha} = req.body
+
+    res.json({status: true, usuario: await Usuario.save(nome, email, senha)})
+}
+
+// Editar
+export const putUsuario = async (req, res) => {   
+    const Usuario = require('../../models/usuario');
+    const token = jwt.decode(req.session.token)
+
+    const {id, nome, email, senha} = req.body
+
+    let obj = await Usuario.update(id, nome, email, senha)
+
+    if (obj[0] == 0) {
+        return res.json({status: false, msg: "Falha ao editar usuário."})
+    }
+    
+    res.json({status: true, conta: await Usuario.getById(id)});
+}
+
+// Excluir
+export const deleteUsuario = async (req, res) => {   
+    const Usuario = require('../../models/usuario');
+
+    const token = jwt.decode(req.session.token)
+    
+    let obj = await Usuario.delete(token.user)
+
+    if (obj[0] == 0) {
+        return res.json({status: false, msg: "Falha ao excluir conta."})
+    }
+    
+    res.json({status: true, msg: "Exclusão com sucesso."});
+}
+
+
+
+
+// API CLIENTE
 // criar usuario
 export const getCriarUsuario = async (req, res) => {    
     res.render('criar-usuario')
@@ -31,7 +94,7 @@ export const getEditarUsuario = async (req, res, next) => {
 }
 
 // editar e excluir usuario
-export const postEditarUsuario = async (req, res) => {
+export const postEditarExcluirUsuario = async (req, res) => {
     const Usuario = require('../../models/usuario');
     
     const token = jwt.decode(req.session.token)

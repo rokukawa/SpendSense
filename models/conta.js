@@ -56,7 +56,7 @@ module.exports = {
                 data_criacao: data_criacao
             }, 
             {
-                where: { id: id }
+                where: {id: id}
             }
         )
     },
@@ -73,8 +73,15 @@ module.exports = {
         return await ContaModel.findAll({where: { usuario: usuario }})
     },
 
-    getByConta: async function(conta) {
-        return await ContaModel.findAll({where: { conta: conta }})
+    getByConta: async function(nome_conta, usuario) {
+        return await ContaModel.findAll(
+            {
+                where: 
+                {
+                    nome_conta: {[Sequelize.Op.like]: nome_conta}, 
+                    usuario: usuario
+                }
+            })
     },
 
     Model: ContaModel

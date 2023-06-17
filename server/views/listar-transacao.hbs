@@ -10,8 +10,8 @@
     }
 </style>
 
-<div class="col col-lg-5" style="margin: auto auto;">
-    <div class="card text-white bar-color mb-3" style="max-width: 58rem;">
+<div class="col col-lg-8" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3 " style="max-width: 100rem;">
         <div class="card-header text-color">Transação</div>
         
         <div class="card-body">
@@ -22,21 +22,34 @@
                         <th scope="col" class="text-color">Descrição</th>
                         <th scope="col" class="text-color">Categoria</th>
                         <th scope="col" class="text-color">Valor</th>
+                        <th scope="col" class="text-color text-center">id</th>
                         <th scope="col" class="text-color text-center">#</th>
                     </tr>
                 </thead>                
                 <tbody class="thead-dark">
                     {{#each data}}
-                        <tr>
-                            <td class="text-color"> {{ data }} </td>
-                            <td class="text-color"> {{ descricao }} </td>
-                            <td class="text-color"> {{ categoria }} </td>
-                            <td class="text-color"> {{ valor }} </td>
-                            <td class="text-color text-center"> 
-                                <button type="submit" class="btn" style="background-color: #cbb26b;color: #002c6a;"> Editar </button>
-                                <button type="submit" class="btn" style="background-color: #cbb26b;color: #002c6a;"> Excluir </button>
-                            </td>
-                        </tr>
+                        <form action="/editar-excluir-transacao" method="POST" id="contactForm" name="contactForm">
+                            <tr>
+                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="data" id="data" value={{ data }}></td>
+                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="descricao" id="descricao" value={{ descricao }}></td>
+                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="categoria" id="categoria" value={{ categoria }}></td>
+                                <td class="text-color"><input type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="valor" id="valor" value={{ valor }}></td>
+                                <td class="text-color"><input readonly="true" type="text" class="form-control" style="background-color: #002c6a; color: #cbb26b" name="id" id="id" value={{ id }}></td>
+                                <td>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-5 form-group text-center">
+                                            <input type="submit" name="editar" value="Editar" style="background-color: #cbb26b;color: #002c6a;" class="btn button-color rounded-1 py-2 px-4">
+                                            <span class="submitting"></span>
+                                        </div>
+
+                                        <div class="col-md-5 form-group text-center">
+                                            <input type="submit" name="excluir" value="Excluir" style="background-color: #cbb26b;color: #002c6a;" class="btn rounded-1 py-2 px-4">
+                                            <span class="submitting"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </form>
                     {{/each}}
                 </tbody>
             </table>
