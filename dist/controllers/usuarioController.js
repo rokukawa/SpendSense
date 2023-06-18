@@ -3,20 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.putUsuario = exports.postUsuario = exports.postEditarExcluirUsuario = exports.postCriarUsuario = exports.getUsuario = exports.getEditarUsuario = exports.getCriarUsuario = exports.deleteUsuario = void 0;
+exports.putUsuario = exports.postUsuario = exports.postListarUsuario = exports.postCriarUsuario = exports.getUsuario = exports.getEditarUsuario = exports.getCriarUsuario = exports.deleteUsuario = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
+const axios = require('axios');
 
 // API REST
 // Lista
 const getUsuario = async (req, res) => {
   const Usuario = require('../../models/usuario');
-  const token = jwt.decode(req.session.token);
   const {
-    email,
-    senha
-  } = req.body;
-  const obj = await Usuario.getByEmailSenha(email, senha);
+    id
+  } = req.params;
+  const obj = await Usuario.getById(id);
   if (!obj) {
     return res.json({
       status: false,
@@ -56,7 +55,7 @@ const putUsuario = async (req, res) => {
     nome,
     email,
     senha
-  } = req.body;
+  } = req.params;
   let obj = await Usuario.update(id, nome, email, senha);
   if (obj[0] == 0) {
     return res.json({
@@ -74,8 +73,10 @@ const putUsuario = async (req, res) => {
 exports.putUsuario = putUsuario;
 const deleteUsuario = async (req, res) => {
   const Usuario = require('../../models/usuario');
-  const token = jwt.decode(req.session.token);
-  let obj = await Usuario.delete(token.user);
+  const {
+    id
+  } = req.params;
+  let obj = await Usuario.delete(id);
   if (obj[0] == 0) {
     return res.json({
       status: false,
@@ -94,57 +95,57 @@ exports.deleteUsuario = deleteUsuario;
 const getCriarUsuario = async (req, res) => {
   res.render('criar-usuario');
 };
-
-// criar usuario post
 exports.getCriarUsuario = getCriarUsuario;
 const postCriarUsuario = async (req, res) => {
-  const Usuario = require('../../models/usuario');
-  const sequelize = require('../../db');
-  await sequelize.sync();
   const {
     nome,
     email,
     senha
   } = req.body;
-  await Usuario.save(nome, email, senha);
-  res.render('login');
+  try {
+    const response = await axios.post("http://localhost:3001/usuario/criar", {
+      nome,
+      email,
+      senha
+    });
+    res.render('login');
+  } catch (error) {
+    console.log(error.response.data);
+  }
 };
 
 // editar usuario
 exports.postCriarUsuario = postCriarUsuario;
 const getEditarUsuario = async (req, res, next) => {
   const token = jwt.decode(req.session.token);
-  const Usuario = require('../../models/usuario');
-  const data = await Usuario.getById(token.user);
-  const {
-    nome,
-    email,
-    senha
-  } = data;
-  res.render('editar-usuario', {
-    nome: nome,
-    email: email,
-    senha: senha
-  });
+  const usuario = token.user;
+  try {
+    const response = await axios.get("http://localhost:3001/usuario/" + usuario);
+    res.render('editar-usuario', {
+      data: response.data.conta
+    });
+  } catch (error) {
+    console.log(error.response.data);
+  }
 };
 
-// editar e excluir usuario
+// listar usuario
 exports.getEditarUsuario = getEditarUsuario;
-const postEditarExcluirUsuario = async (req, res) => {
-  const Usuario = require('../../models/usuario');
+const postListarUsuario = async (req, res) => {
   const token = jwt.decode(req.session.token);
   const {
-    name,
+    id,
+    nome,
     email,
-    password,
+    senha,
     editar
   } = req.body;
   if (editar !== undefined) {
-    await Usuario.update(token.user, name, email, password);
+    await axios.put(`http://localhost:3001/usuario/editar/${id}/${nome}/${email}/${senha}`);
     res.redirect('/');
   } else {
-    await Usuario.delete(token.user);
+    await axios.delete(`http://localhost:3001/usuario/deletar/${id}`);
     res.redirect('/login');
   }
 };
-exports.postEditarExcluirUsuario = postEditarExcluirUsuario;
+exports.postListarUsuario = postListarUsuario;

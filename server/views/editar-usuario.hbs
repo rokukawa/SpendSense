@@ -20,24 +20,26 @@
             <div class="col-md-7">
                 <div class="form h-100 contact-wrap p-5">
                     <h3 class="text-center text-color"> Editar usuário </h3>
-                    <form class="mb-5" action="/editar-excluir-usuario" method="post" id="contactForm" name="contactForm">
+                    <form class="mb-5" action="/listar-usuario" method="post" id="contactForm" name="contactForm">
                         <div class="row">
                             <div class="col-md-8 form-group mb-3">
                                 <label for="" class="col-form-label text-color">Nome *</label>
-                                <input type="text" class="form-control" name="name" id="name" value={{ nome }}>
+                                <input type="text" class="form-control" name="nome" id="nome" value={{ data.nome }}>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12 form-group mb-3">
                                 <label for="" class="col-form-label text-color">E-mail *</label>
-                                <input type="email" class="form-control" name="email" id="email" value={{ email }}>
+                                <input type="email" class="form-control" name="email" id="email" value={{ data.email }}>
                             </div>
                             <div class="col-md-12 form-group mb-3">
                                 <label for="budget" class="col-form-label text-color">Senha</label>
-                                <input type="text" class="form-control" name="password" id="password" value={{ senha }}>
+                                <input type="text" class="form-control" name="senha" id="senha" value={{ data.senha }}>
                             </div>
                         </div>
+
+                        <input type="hidden" class="form-control" name="id" id="id" value={{ data.id }}>
 
                         <div class="row justify-content-center">
                             <div class="col-md-5 form-group text-center">
