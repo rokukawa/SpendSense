@@ -192,9 +192,9 @@ const postGerarCarga = async (req, res) => {
       const categoria = faker.name.findName();
       const transacao = await Transacao.save(data_transacao, valor, valor, conta.id);
     }
-    res.send('<script>alert("Conteúdo prévio carregado com sucesso!"); window.location.href = "/contato";</script>');
+    res.send('<script>alert("Conteúdo prévio carregado com sucesso!"); window.location.href = "/";</script>');
   } catch (error) {
-    res.send('<script>alert("Não foi possível carregar conteúdo prévio."); window.location.href = "/contato";</script>');
+    res.send('<script>alert("Não foi possível carregar conteúdo prévio."); window.location.href = "/";</script>');
   }
 };
 exports.postGerarCarga = postGerarCarga;
