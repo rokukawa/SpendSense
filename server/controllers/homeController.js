@@ -60,8 +60,8 @@ export const getContato = (req, res) => {
     res.render('contato')
 };
 
-// .replace(",", "").replace('"', "").replace('"', "")
 // contato
+
 const transporter = nodemailer.createTransport({
     host: process.env.NDM_HOST,
     port: process.env.NDM_PORT,
@@ -75,12 +75,26 @@ const transporter = nodemailer.createTransport({
 export const postContato = async (req, res) => {
     const {name, email, subject, message} = req.body
 
+    await transporter.verify((er, suc) => {
+        if (er) {
+            console.error('Erro ao verificar conexão:', er);
+            console.log(process.env)
+        } else {
+            console.log('Conexão verificada com sucesso');
+        }
+    })
+
     await transporter.sendMail({
         text: message,
         subject: subject,
-        from: process.env.NDM_USER,
+        from: `${name} <${email}>}`,
         to: process.env.NDM_USER
     })
+    .then((response) => {
+        res.redirect('/')
+    })
+    .catch((error) => {
+        res.redirect('/')
+    })
 
-    res.redirect('/')
 };

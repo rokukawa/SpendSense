@@ -77,15 +77,14 @@ const getContato = (req, res) => {
   res.render('contato');
 };
 
-// .replace(",", "").replace('"', "").replace('"', "")
 // contato
 exports.getContato = getContato;
 const transporter = nodemailer.createTransport({
-  host: process && process.env && process.env.NDM_HOST || "\"smtp.gmail.com\",",
-  port: process && process.env && process.env.NDM_PORT || "\"587\",",
+  host: process && process.env && process.env.NDM_HOST || "smtp.office365.com",
+  port: process && process.env && process.env.NDM_PORT || "587",
   secure: false,
   auth: {
-    user: process && process.env && process.env.NDM_USER || "\"emailweb2utfpr@gmail.com\",",
+    user: process && process.env && process.env.NDM_USER || "emailweb2utfpr@gmail.com",
     pass: process && process.env && process.env.NDM_PASS || "EmailWeb2_UTFPR"
   }
 });
@@ -96,12 +95,23 @@ const postContato = async (req, res) => {
     subject,
     message
   } = req.body;
+  await transporter.verify((er, suc) => {
+    if (er) {
+      console.error('Erro ao verificar conexão:', er);
+      console.log(process.env);
+    } else {
+      console.log('Conexão verificada com sucesso');
+    }
+  });
   await transporter.sendMail({
     text: message,
     subject: subject,
-    from: process && process.env && process.env.NDM_USER || "\"emailweb2utfpr@gmail.com\",",
-    to: process && process.env && process.env.NDM_USER || "\"emailweb2utfpr@gmail.com\","
+    from: `${name} <${email}>}`,
+    to: process && process.env && process.env.NDM_USER || "emailweb2utfpr@gmail.com"
+  }).then(response => {
+    res.redirect('/');
+  }).catch(error => {
+    res.redirect('/');
   });
-  res.redirect('/');
 };
 exports.postContato = postContato;
