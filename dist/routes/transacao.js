@@ -24,16 +24,16 @@ function verifyJWT(req, res, next) {
 const router = _express.default.Router();
 
 // API REST
-router.get('/transacao', transacaoController.getTransacao);
+router.get('/transacao/:id', transacaoController.getTransacao);
 router.post('/transacao/criar', transacaoController.postTransacao);
-router.put('/transacao/editar', transacaoController.putTransacao);
-router.delete('/transacao/deletar', transacaoController.deleteTransacao);
+router.put('/transacao/editar/:id/:data_transacao/:valor/:descricao/:categoria', transacaoController.putTransacao);
+router.delete('/transacao/deletar/:id', transacaoController.deleteTransacao);
 // router.get('/transacao/gerar', transacaoController.getGerarTransacao);
 
 // API CLIENTE
 router.get('/criar-transacao', verifyJWT, transacaoController.getCriarTransacao);
-router.post('/criar-transacao', transacaoController.postCriarTransacao);
+router.post('/criar-transacao', verifyJWT, transacaoController.postCriarTransacao);
 router.get('/listar-transacao', verifyJWT, transacaoController.getListarTransacao);
-router.post('/listar-transacao', transacaoController.postEditarExcluirTransacao);
+router.post('/listar-transacao', verifyJWT, transacaoController.postListarTransacao);
 var _default = router;
 exports.default = _default;

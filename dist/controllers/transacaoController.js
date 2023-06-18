@@ -3,16 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.putTransacao = exports.postTransacao = exports.postEditarExcluirTransacao = exports.postCriarTransacao = exports.getTransacao = exports.getListarTransacao = exports.getCriarTransacao = exports.deleteTransacao = void 0;
+exports.putTransacao = exports.postTransacao = exports.postListarTransacao = exports.postCriarTransacao = exports.getTransacao = exports.getListarTransacao = exports.getCriarTransacao = exports.deleteTransacao = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
+const axios = require('axios');
 
 // API REST
 // Listar 
 const getTransacao = async (req, res) => {
   const Conta = require('../../models/conta');
   const Transacao = require('../../models/transacao');
-  const id = req.body.id;
+  const {
+    id
+  } = req.params;
   const obj = await Conta.getByUsuario(id);
   let contas = [];
   obj.forEach(obj => {
@@ -60,7 +63,8 @@ const putTransacao = async (req, res) => {
     descricao,
     categoria,
     id
-  } = req.body;
+  } = req.params;
+  console.log(req.params);
   let obj = await Transacao.update(id, data, valor, descricao, categoria);
   if (obj[0] == 0) {
     return res.json({
@@ -80,7 +84,7 @@ const deleteTransacao = async (req, res) => {
   const Transacao = require('../../models/transacao');
   const {
     id
-  } = req.body;
+  } = req.params;
   let obj = await Transacao.delete(id);
   if (obj[0] == 0) {
     return res.json({
@@ -98,14 +102,14 @@ const deleteTransacao = async (req, res) => {
 // criar transacao
 exports.deleteTransacao = deleteTransacao;
 const getCriarTransacao = async (req, res) => {
-  const Conta = require('../../models/conta');
   const token = jwt.decode(req.session.token);
-  const data = await Conta.getByUsuario(token.user);
+  const response = await axios.get("http://localhost:3001/conta/" + token.user);
+  const data = response.data.conta;
   const usuario = [];
   data.forEach(data => {
     usuario.push({
-      id: data.dataValues.id,
-      nome_conta: data.dataValues.nome_conta
+      id: data.id,
+      nome_conta: data.nome_conta
     });
   });
   res.render('criar-transacao', {
@@ -116,9 +120,6 @@ const getCriarTransacao = async (req, res) => {
 // criar transacao post
 exports.getCriarTransacao = getCriarTransacao;
 const postCriarTransacao = async (req, res) => {
-  const Transacao = require('../../models/transacao');
-  const sequelize = require('../../db');
-  await sequelize.sync();
   const {
     data,
     valor,
@@ -126,56 +127,52 @@ const postCriarTransacao = async (req, res) => {
     categoria,
     conta
   } = req.body;
-  await Transacao.save(data, valor, descricao, categoria, conta);
-  res.render('home');
+  try {
+    const response = await axios.post("http://localhost:3001/transacao/criar", {
+      data,
+      valor,
+      descricao,
+      categoria,
+      conta
+    });
+    res.render('home');
+  } catch (error) {
+    console.log(error.response.data);
+  }
 };
 
 // listar transacao 
 exports.postCriarTransacao = postCriarTransacao;
 const getListarTransacao = async (req, res) => {
-  const Conta = require('../../models/conta');
-  const Transacao = require('../../models/transacao');
   const token = jwt.decode(req.session.token);
-  const contas = await Conta.getByUsuario(token.user);
-  const ids = [];
-  contas.forEach(contas => {
-    ids.push(contas.dataValues.id);
-  });
-  const transacoes = await Transacao.getByConta(ids);
-  const data = [];
-  transacoes.forEach(transacoes => {
-    data.push({
-      data: transacoes.dataValues.data_transacao,
-      valor: transacoes.dataValues.valor,
-      descricao: transacoes.dataValues.descricao,
-      categoria: transacoes.dataValues.categoria,
-      id: transacoes.dataValues.id
+  try {
+    const response = await axios.get("http://localhost:3001/transacao/" + token.user);
+    const data = response.data.transacao;
+    res.render('listar-transacao', {
+      data
     });
-  });
-  res.render('listar-transacao', {
-    data
-  });
+  } catch (error) {
+    console.log(error.response.data);
+  }
 };
 
-// editar e excluir transacao
+// listar transacao
 exports.getListarTransacao = getListarTransacao;
-const postEditarExcluirTransacao = async (req, res) => {
-  const Transacao = require('../../models/transacao');
-  const token = jwt.decode(req.session.token);
+const postListarTransacao = async (req, res) => {
   const {
-    data,
+    id,
+    data_transacao,
     valor,
     descricao,
     categoria,
-    id,
     editar
   } = req.body;
   if (editar !== undefined) {
-    await Transacao.update(id, data, valor, descricao, categoria);
+    await axios.put(`http://localhost:3001/transacao/editar/${id}/${data_transacao}/${valor}/${descricao}/${categoria}`);
     res.redirect('/');
   } else {
-    await Transacao.delete(id);
+    await axios.delete(`http://localhost:3001/transacao/deletar/${id}`);
     res.redirect('/');
   }
 };
-exports.postEditarExcluirTransacao = postEditarExcluirTransacao;
+exports.postListarTransacao = postListarTransacao;
