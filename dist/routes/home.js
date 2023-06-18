@@ -30,5 +30,6 @@ router.get('/sobre', homeController.getSobre);
 router.get('/ferramentas-tecnologias', homeController.getFerramentasTecnologias);
 router.get('/portfolio', homeController.getPortfolio);
 router.get('/contato', homeController.getContato);
+router.post('/contato', homeController.postContato);
 var _default = router;
 exports.default = _default;

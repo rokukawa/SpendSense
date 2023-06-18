@@ -1,6 +1,9 @@
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
 
+// função para envio de email
+const nodemailer = require("nodemailer");
+
 // login
 export const getLogin = async (req, res) => {
     res.render('login')
@@ -55,4 +58,29 @@ export const getPortfolio = (req, res) => {
 // contato
 export const getContato = (req, res) => {
     res.render('contato')
+};
+
+// .replace(",", "").replace('"', "").replace('"', "")
+// contato
+const transporter = nodemailer.createTransport({
+    host: process.env.NDM_HOST,
+    port: process.env.NDM_PORT,
+    secure: false, 
+    auth: {
+        user: process.env.NDM_USER,
+        pass: process.env.NDM_PASS
+    }
+})
+
+export const postContato = async (req, res) => {
+    const {name, email, subject, message} = req.body
+
+    await transporter.sendMail({
+        text: message,
+        subject: subject,
+        from: process.env.NDM_USER,
+        to: process.env.NDM_USER
+    })
+
+    res.redirect('/')
 };

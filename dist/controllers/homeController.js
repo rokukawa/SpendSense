@@ -3,9 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.postLogout = exports.postLogin = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getContato = void 0;
+exports.postLogout = exports.postLogin = exports.postContato = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getContato = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
+
+// função para envio de email
+const nodemailer = require("nodemailer");
 
 // login
 const getLogin = async (req, res) => {
@@ -73,4 +76,32 @@ exports.getPortfolio = getPortfolio;
 const getContato = (req, res) => {
   res.render('contato');
 };
+
+// .replace(",", "").replace('"', "").replace('"', "")
+// contato
 exports.getContato = getContato;
+const transporter = nodemailer.createTransport({
+  host: process && process.env && process.env.NDM_HOST || "\"smtp.gmail.com\",",
+  port: process && process.env && process.env.NDM_PORT || "\"587\",",
+  secure: false,
+  auth: {
+    user: process && process.env && process.env.NDM_USER || "\"emailweb2utfpr@gmail.com\",",
+    pass: process && process.env && process.env.NDM_PASS || "EmailWeb2_UTFPR"
+  }
+});
+const postContato = async (req, res) => {
+  const {
+    name,
+    email,
+    subject,
+    message
+  } = req.body;
+  await transporter.sendMail({
+    text: message,
+    subject: subject,
+    from: process && process.env && process.env.NDM_USER || "\"emailweb2utfpr@gmail.com\",",
+    to: process && process.env && process.env.NDM_USER || "\"emailweb2utfpr@gmail.com\","
+  });
+  res.redirect('/');
+};
+exports.postContato = postContato;
