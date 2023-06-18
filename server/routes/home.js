@@ -36,4 +36,6 @@ router.get('/contato', homeController.getContato);
 
 router.post('/contato', homeController.postContato);
 
+router.post('/exportar-extrato', homeController.postExportExtrato);
+
 export default router;
