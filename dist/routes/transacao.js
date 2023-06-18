@@ -28,7 +28,6 @@ router.get('/transacao/:id', transacaoController.getTransacao);
 router.post('/transacao/criar', transacaoController.postTransacao);
 router.put('/transacao/editar/:id/:data_transacao/:valor/:descricao/:categoria', transacaoController.putTransacao);
 router.delete('/transacao/deletar/:id', transacaoController.deleteTransacao);
-// router.get('/transacao/gerar', transacaoController.getGerarTransacao);
 
 // API CLIENTE
 router.get('/criar-transacao', verifyJWT, transacaoController.getCriarTransacao);

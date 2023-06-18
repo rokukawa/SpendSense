@@ -23,7 +23,6 @@ router.get('/conta/:usuario', contaController.getConta);
 router.post('/conta/criar', contaController.postConta);
 router.put('/conta/editar/:usuario/:nome_conta/:tipo_conta/:saldo', contaController.putConta);
 router.delete('/conta/deletar/:usuario', contaController.deleteConta);
-// router.get('/conta/gerar', verifyJWT, contaController.getCriarConta);
 
 // API CLIENTE
 router.get('/criar-conta', verifyJWT, contaController.getCriarConta);

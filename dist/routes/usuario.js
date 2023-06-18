@@ -28,7 +28,6 @@ router.get('/usuario/:id', usuarioController.getUsuario);
 router.post('/usuario/criar', usuarioController.postUsuario);
 router.put('/usuario/editar/:id/:nome/:email/:senha', usuarioController.putUsuario);
 router.delete('/usuario/deletar/:id', usuarioController.deleteUsuario);
-// router.get('/usuario/gerar', usuarioController.getCriarUsuario);
 
 // API CLIENTE
 router.get('/criar-usuario', usuarioController.getCriarUsuario);

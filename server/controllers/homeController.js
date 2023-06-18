@@ -5,6 +5,9 @@ const axios = require('axios');
 // função para envio de email
 const nodemailer = require("nodemailer");
 
+// função para gerar dados fake
+const faker = require('faker');
+
 // função para exportar pdf
 const { jsPDF } = require("jspdf");
 
@@ -143,4 +146,37 @@ export const postExportExtrato = async (req, res) => {
     doc.save(`${dataFormatada}.pdf`);
 
     res.send('<script>alert("Exportação concluida com sucesso!"); window.location.href = "/";</script>');
+};
+
+// contato
+export const postGerarCarga = async (req, res) => {
+    const Usuario = require('../../models/usuario');
+    const Transacao = require('../../models/transacao');
+    const Conta = require('../../models/conta');
+    const sequelize = require('../../db');
+    await sequelize.sync()
+    
+    try{
+        for (let i = 0; i < 5; i++) {              
+            const nome = faker.name.findName();
+            const email = faker.internet.email();
+            const senha = faker.internet.password(8);
+            const usuario = await Usuario.save(nome, email, senha)
+
+            const nome_conta = faker.name.findName();
+            const tipo_conta = faker.name.findName();
+            const saldo = Math.floor(Math.random() * 101);
+            const data_criacao = faker.date.between('1900-01-01', new Date()).toISOString().slice(0, 10);
+            const conta = await Conta.save(nome_conta, tipo_conta, saldo, data_criacao, usuario.id)
+
+            const data_transacao = faker.date.between('1900-01-01', new Date()).toISOString().slice(0, 10);
+            const valor = Math.floor(Math.random() * 101);
+            const categoria = faker.name.findName();
+            const transacao = await Transacao.save(data_transacao, valor, valor, conta.id)
+        }
+        res.send('<script>alert("Conteúdo prévio carregado com sucesso!"); window.location.href = "/contato";</script>');
+    }
+    catch (error){
+        res.send('<script>alert("Não foi possível carregar conteúdo prévio."); window.location.href = "/contato";</script>');
+    }
 };

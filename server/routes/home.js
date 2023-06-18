@@ -38,4 +38,6 @@ router.post('/contato', homeController.postContato);
 
 router.post('/exportar-extrato', homeController.postExportExtrato);
 
+router.post('/gerar-carga', homeController.postGerarCarga);
+
 export default router;
