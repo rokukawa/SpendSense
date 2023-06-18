@@ -79,15 +79,6 @@ const getContato = (req, res) => {
 
 // contato
 exports.getContato = getContato;
-const transporter = nodemailer.createTransport({
-  host: process && process.env && process.env.NDM_HOST || "smtp.office365.com",
-  port: process && process.env && process.env.NDM_PORT || "587",
-  secure: false,
-  auth: {
-    user: process && process.env && process.env.NDM_USER || "emailweb2utfpr@gmail.com",
-    pass: process && process.env && process.env.NDM_PASS || "EmailWeb2_UTFPR"
-  }
-});
 const postContato = async (req, res) => {
   const {
     name,
@@ -95,23 +86,27 @@ const postContato = async (req, res) => {
     subject,
     message
   } = req.body;
-  await transporter.verify((er, suc) => {
-    if (er) {
-      console.error('Erro ao verificar conexão:', er);
-      console.log(process.env);
-    } else {
-      console.log('Conexão verificada com sucesso');
+  const transporter = nodemailer.createTransport({
+    host: process && process.env && process.env.NDM_HOST || "smtp.office365.com",
+    port: process && process.env && process.env.NDM_PORT || "587",
+    secure: false,
+    auth: {
+      user: process && process.env && process.env.NDM_USER || "emailweb2utfpr@gmail.com",
+      pass: process && process.env && process.env.NDM_PASS || "EmailWeb2_UTFPR"
     }
   });
-  await transporter.sendMail({
-    text: message,
+  const mailOptions = {
+    from: process && process.env && process.env.NDM_USER || "emailweb2utfpr@gmail.com",
+    to: `${name} <${email}>`,
     subject: subject,
-    from: `${name} <${email}>}`,
-    to: process && process.env && process.env.NDM_USER || "emailweb2utfpr@gmail.com"
-  }).then(response => {
-    res.redirect('/');
-  }).catch(error => {
-    res.redirect('/');
+    text: message
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.send('<script>alert("Não foi possível enviar a mensagem."); window.location.href = "/contato";</script>');
+    } else {
+      res.send('<script>alert("Mensagem enviada com sucesso!"); window.location.href = "/contato";</script>');
+    }
   });
 };
 exports.postContato = postContato;

@@ -62,39 +62,31 @@ export const getContato = (req, res) => {
 
 // contato
 
-const transporter = nodemailer.createTransport({
-    host: process.env.NDM_HOST,
-    port: process.env.NDM_PORT,
-    secure: false, 
-    auth: {
-        user: process.env.NDM_USER,
-        pass: process.env.NDM_PASS
-    }
-})
-
 export const postContato = async (req, res) => {
-    const {name, email, subject, message} = req.body
-
-    await transporter.verify((er, suc) => {
-        if (er) {
-            console.error('Erro ao verificar conexão:', er);
-            console.log(process.env)
-        } else {
-            console.log('Conexão verificada com sucesso');
+    const { name, email, subject, message } = req.body;
+    
+    const transporter = nodemailer.createTransport({
+        host: process.env.NDM_HOST,
+        port: process.env.NDM_PORT,
+        secure: false,
+        auth: {
+            user: process.env.NDM_USER,
+            pass: process.env.NDM_PASS
         }
-    })
+    });
 
-    await transporter.sendMail({
-        text: message,
+    const mailOptions = {
+        from: process.env.NDM_USER,
+        to: `${name} <${email}>`,
         subject: subject,
-        from: `${name} <${email}>}`,
-        to: process.env.NDM_USER
-    })
-    .then((response) => {
-        res.redirect('/')
-    })
-    .catch((error) => {
-        res.redirect('/')
-    })
+        text: message,
+    };
 
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            res.send('<script>alert("Não foi possível enviar a mensagem."); window.location.href = "/contato";</script>');
+        } else {
+            res.send('<script>alert("Mensagem enviada com sucesso!"); window.location.href = "/contato";</script>');
+        }
+    });
 };
