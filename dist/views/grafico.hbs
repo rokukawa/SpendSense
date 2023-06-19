@@ -1,0 +1,52 @@
+{{>dashboard}}
+
+<style>
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+</style>
+
+<div class="col col-lg-5" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3 rounded-1" style="max-width: 58rem;">
+        <div class="card-header text-color">
+            Gráfico
+        </div>
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+        
+        <input type="hidden" class="form-control" name="contas" id="contas" value={{ contas }}>
+        <input type="hidden" class="form-control" name="transacao" id="transacao" value={{ transacao }}>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+  const contas = document.getElementById('contas');
+  const transacao = document.getElementById('transacao');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: contas.value.split(','),
+      datasets: [{
+        label: 'Transações de contas',
+        data: transacao.value.split(','),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.postLogout = exports.postLogin = exports.postGerarCarga = exports.postExportExtrato = exports.postContato = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getFerramentasTecnologias = exports.getContato = void 0;
+exports.postLogout = exports.postLogin = exports.postGerarCarga = exports.postExportExtrato = exports.postContato = exports.getSobre = exports.getPortfolio = exports.getLogin = exports.getHome = exports.getGrafico = exports.getFerramentasTecnologias = exports.getContato = void 0;
 // função controle de acessos autenticado
 const jwt = require("jsonwebtoken");
 const axios = require('axios');
@@ -190,11 +190,45 @@ const postGerarCarga = async (req, res) => {
       const data_transacao = faker.date.between('1900-01-01', new Date()).toISOString().slice(0, 10);
       const valor = Math.floor(Math.random() * 101);
       const categoria = faker.name.findName();
-      const transacao = await Transacao.save(data_transacao, valor, valor, conta.id);
+      const transacao = await Transacao.save(data_transacao, valor, categoria, conta.id);
     }
     res.send('<script>alert("Conteúdo prévio carregado com sucesso!"); window.location.href = "/";</script>');
   } catch (error) {
     res.send('<script>alert("Não foi possível carregar conteúdo prévio."); window.location.href = "/";</script>');
   }
 };
+
+// grafico
 exports.postGerarCarga = postGerarCarga;
+const getGrafico = async (req, res) => {
+  const Conta = require('../../models/conta');
+  const Transacao = require('../../models/transacao');
+  const token = jwt.decode(req.session.token);
+  const usuario = token.user;
+  const obj = await Conta.getByUsuario(usuario);
+  let contas = [];
+  let lista = [];
+  obj.forEach(function (dados) {
+    contas.push(dados.nome_conta);
+    lista.push(dados.id);
+  });
+  const value = await Transacao.getByConta(lista);
+  const somaValores = {};
+  for (const item of value) {
+    const {
+      conta,
+      valor
+    } = item;
+    if (somaValores[conta]) {
+      somaValores[conta] += valor;
+    } else {
+      somaValores[conta] = valor;
+    }
+  }
+  const transacao = Object.values(somaValores);
+  res.render('grafico', {
+    contas: contas,
+    transacao: transacao
+  });
+};
+exports.getGrafico = getGrafico;

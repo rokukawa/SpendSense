@@ -40,4 +40,6 @@ router.post('/exportar-extrato', homeController.postExportExtrato);
 
 router.post('/gerar-carga', homeController.postGerarCarga);
 
+router.get('/grafico', verifyJWT, homeController.getGrafico);
+
 export default router;
