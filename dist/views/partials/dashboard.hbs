@@ -1,0 +1,68 @@
+
+<style>
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+</style>
+
+<div class="col-lg-2">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bar-color" style="width: 280px; height: 100vh;">
+        <p class="d-flex align-items-center mb-3 mb-md-0 me-md-auto  text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"></svg>
+            <span class="fs-4 text-color">SpendSense</span>
+            <hr class="text-color">
+        </p>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="/" class="nav-link link-warning text-color" aria-current="page">
+                    <span class="material-icons-outlined text-color"> home </span>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/sobre" class="nav-link link-warning text-color">
+                    <span class="material-icons-outlined text-color"> article </span>
+                    Sobre
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/ferramentas-tecnologias" class="nav-link link-warning text-color">
+                    <span class="material-icons-outlined text-color"> build </span>
+                    Ferramentas e Tecnologias
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/portfolio" class="nav-link link-warning text-color">
+                    <span class="material-icons-outlined text-color"> account_circle </span>
+                    Portfólio
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/contato" class="nav-link link-warning text-color">
+                    <span class="material-icons-outlined text-color"> contact_mail </span>
+                    Contato
+                </a>
+            </li>
+        </ul>
+        <hr class="text-color">
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center link-warning text-decoration-none dropdown-toggle text-color"
+                id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                <strong>Opções</strong>
+            </a>
+            <ul class="dropdown-menu text-small text-color" aria-labelledby="dropdownUser2">
+                <li>
+                    <form action="/logout" method="POST">
+                        <button class="dropdown-item link-warning text-color" type="submit">
+                            Sair          
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

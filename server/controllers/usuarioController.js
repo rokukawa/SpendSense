@@ -56,7 +56,6 @@ export const putUsuario = async (req, res) => {
         }
         res.json({status: true, conta: await Usuario.getById(id)});
     }
-
 }
 
 // Excluir

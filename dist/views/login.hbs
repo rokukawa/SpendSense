@@ -1,0 +1,128 @@
+{{>dashboard}}
+
+
+<style>
+  body {
+    background-color: #002c6a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .container {
+    background-color: #cbb26b;
+    width: 100%;
+    padding: 40px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .logo img {
+    width: 150px;
+    border-radius: 4px;
+  }
+
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #002c6a;
+    color: #cbb26b;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .login-form a {
+    color: #cbb26b;
+    text-decoration: none;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .footer a {
+    color: #002c6a;
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  .news-block {
+    background-color: #002c6a;
+    color: #cbb26b;
+    padding: 20px;
+    border-radius: 4px;
+  }
+
+  .news-block h2 {
+    font-size: 24px;
+    margin-top: 0;
+  }
+
+  .news-block ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .news-block li {
+    margin-bottom: 10px;
+  }
+
+  .news-block a {
+    color: #cbb26b;
+    text-decoration: none;
+  }
+
+  .news-block a:hover {
+    text-decoration: underline;
+  }
+
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+</style>
+
+<div class="col col-lg-5" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3" style="max-width: 58rem;">
+      <div class="container">
+        <div class="logo">
+            <img src="images/logo.png" alt="SpendSense Logo">
+        </div>
+        <form action="/login" method="POST" class="login-form">
+            <input type="text" name="email" placeholder="E-mail">
+            <input type="password" name="senha" placeholder="Senha">
+            <button type="submit"> Entrar </button>
+        </form>
+        <div class="footer">
+            <p>Não tem uma conta?</p>
+            <a href="/criar-usuario">Criar conta</a>
+        </div>
+      </div>
+    </div>
+</div>

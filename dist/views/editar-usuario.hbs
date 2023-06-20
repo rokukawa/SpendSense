@@ -1,0 +1,61 @@
+{{>dashboard}}
+
+<style>
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+
+    .button-color {
+        background-color: #cbb26b;
+    }
+</style>
+
+<div class="col col-lg-5" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3" style="max-width: 58rem;">
+        <div class="row align-items-stretch justify-content-center no-gutters">
+            <div class="col-md-7">
+                <div class="form h-100 contact-wrap p-5">
+                    <h3 class="text-center text-color"> Editar usuário </h3>
+                    <form class="mb-5" action="/listar-usuario" method="post" id="contactForm" name="contactForm">
+                        <p>{{mensagem}}</p>
+                        <div class="row">
+                            <div class="col-md-8 form-group mb-3">
+                                <label for="" class="col-form-label text-color">Nome *</label>
+                                <input type="text" class="form-control" name="nome" id="nome" value={{ data.nome }}>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="" class="col-form-label text-color">E-mail *</label>
+                                <input type="email" class="form-control" name="email" id="email" value={{ data.email }}>
+                            </div>
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="budget" class="col-form-label text-color">Senha</label>
+                                <input type="text" class="form-control" name="senha" id="senha" value={{ data.senha }}>
+                            </div>
+                        </div>
+
+                        <input type="hidden" class="form-control" name="id" id="id" value={{ data.id }}>
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-5 form-group text-center">
+                                <input type="submit" name="editar" value="Editar" class="btn btn-secondary button-color rounded-1 py-2 px-4">
+                                <span class="submitting"></span>
+                            </div>
+
+                            <div class="col-md-5 form-group text-center">
+                                <input type="submit" name="excluir" value="Excluir" class="btn btn-danger rounded-1 py-2 px-4">
+                                <span class="submitting"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+{{>dashboard}}
+<style>
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+</style>
+
+<div class="col col-lg-5" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3 rounded-1" style="max-width: 58rem;">
+        <div class="card-header text-color">
+            Gráfico
+        </div>
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+        
+        <input type="hidden" class="form-control" name="contas" id="contas" value="{{ contas }}">
+        <input type="hidden" class="form-control" name="transacao" id="transacao" value="{{ transacao }}">
+
+        <button onclick="exportarPDF()">Exportar para PDF</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+  const contasInput = document.getElementById('contas');
+  const transacaoInput = document.getElementById('transacao');
+
+  const contas = contasInput.value.split(',');
+  const transacao = transacaoInput.value.split(',');
+
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: contas,
+      datasets: [{
+        label: 'Transações de contas',
+        data: transacao,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  function exportarPDF() {
+    const chartCanvas = chart.canvas;
+    const chartDataUrl = chartCanvas.toDataURL("image/jpeg");
+
+    const content = `
+      <style>
+        .text-color {
+          color: #cbb26b;
+        }
+
+        .bar-color {
+          background-color: #002c6a;
+        }
+      </style>
+      <div class="col col-lg-5" style="margin: auto auto;">
+        <div class="card text-white bar-color mb-3 rounded-1" style="max-width: 58rem;">
+          <div class="card-header text-color">
+              Gráfico
+          </div>
+          <div>
+              <img src="${chartDataUrl}">
+          </div>
+        </div>
+      </div>
+    `;
+
+    const element = document.createElement("div");
+    element.innerHTML = content;
+
+    html2pdf()
+      .set({ filename: 'grafico.pdf', margin: [10, 10, 10, 10] })
+      .from(element)
+      .save();
+  }
+</script>

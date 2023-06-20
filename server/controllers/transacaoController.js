@@ -31,26 +31,36 @@ export const postTransacao = async (req, res) => {
     const sequelize = require('../../db');
     await sequelize.sync()
 
+    const schema = require('../validators/transacao')
     const {data, valor, descricao, categoria, conta} = req.body
 
-    res.json({status: true, transacao: await Transacao.save(data, valor, descricao, categoria, conta)})
+    const result = schema.validate({data:data, valor:valor, descricao: descricao})
+    
+    if (result.error){
+        res.json({status: false, mensagem: result.error.message})
+    }else{
+        const {nome, email, senha} = req.body
+        res.json({status: true, transacao: await Transacao.save(data, valor, descricao, categoria, conta)})
+    }
 }
 
 // Editar
 export const putTransacao = async (req, res) => {   
     const Transacao = require('../../models/transacao');
+    const schema = require('../validators/transacao');
     
     const {data, valor, descricao, categoria, id} = req.params
 
-    console.log(req.params)
-
-    let obj = await Transacao.update(id, data, valor, descricao, categoria)
-
-    if (obj[0] == 0) {
-        return res.json({status: false, msg: "Falha ao editar transação."})
+    const result = schema.validate({data:data, valor:valor, descricao: descricao})
+    if (result.error){
+        res.json({status: false, mensagem: result.error.message})
+    }else{
+        let obj = await Transacao.update(id, data, valor, descricao, categoria)
+        if (obj[0] == 0) {
+            return res.json({status: false, msg: "Falha ao editar transação."})
+        }
+        res.json({status: true, transacao: await Transacao.getById(id)});
     }
-    
-    res.json({status: true, transacao: await Transacao.getById(id)});
 }
 
 // Excluir
@@ -101,7 +111,11 @@ export const postCriarTransacao = async (req, res) => {
                 conta
             }
         );
-        res.render('home');
+        if(response.data.status){
+            res.render('home');
+        }else{
+            res.render('criar-transacao', {mensagem: response.data.mensagem});
+        }
     } catch (error) {
         console.log(error.response.data);
     }
@@ -109,9 +123,9 @@ export const postCriarTransacao = async (req, res) => {
 
 // listar transacao 
 export const getListarTransacao = async (req, res) => {
-    const token = jwt.decode(req.session.token);
 
     try {
+        const token = jwt.decode(req.session.token);
         const response = await axios.get("http://localhost:3001/transacao/" + token.user);
         const data = response.data.transacao
 
@@ -126,8 +140,17 @@ export const postListarTransacao = async (req, res) => {
     const { id, data_transacao, valor, descricao, categoria, editar } = req.body
   
     if(editar !== undefined){
-        await axios.put(`http://localhost:3001/transacao/editar/${id}/${data_transacao}/${valor}/${descricao}/${categoria}`);
-        res.redirect('/')
+        const response = await axios.put(`http://localhost:3001/transacao/editar/${id}/${data_transacao}/${valor}/${descricao}/${categoria}`);
+        
+        if(response.data.status){
+            res.redirect('/')
+        }else{
+            const token = jwt.decode(req.session.token);
+            const transacao = await axios.get("http://localhost:3001/transacao/" + token.user);
+            const data = transacao.data.transacao
+
+            res.render('listar-transacao', { data: data, mensagem: response.data.mensagem })
+        }
     }else{
         await axios.delete(`http://localhost:3001/transacao/deletar/${id}`);
         res.redirect('/')

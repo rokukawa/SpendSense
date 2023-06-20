@@ -1,0 +1,43 @@
+{{>dashboard}}
+
+<style>
+    .text-color {
+        color: #cbb26b;
+    }
+
+    .bar-color {
+        background-color: #002c6a;
+    }
+</style>
+
+<div class="col col-lg-5" style="margin: auto auto;">
+    <div class="card text-white bar-color mb-3" style="max-width: 58rem;">
+        <div class="card-header text-color">Conta Bancária</div>
+        <div class="card-body">
+            <form action="/criar-conta" method="post">
+                <div class="form-group">
+                    <label for="nome_conta" class="text-color">Nome da Conta</label>
+                    <input type="text" class="form-control" id="nome_conta" name="nome_conta" placeholder="Digite o nome da conta">
+                </div>
+                <div class="form-group">
+                    <label for="tipo_conta" class="text-color">Tipo Conta:</label>
+                    <select class="form-control" id="tipo_conta" name="tipo_conta">
+                    <option value="corrente">Corrente</option>
+                    <option value="poupanca">Poupança</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="saldo" class="text-color">Saldo</label>
+                    <input type="text" class="form-control" id="saldo" name="saldo" placeholder="Digite o saldo">
+                </div>
+                <div class="form-group">
+                    <label for="data" class="text-color">Data de Criação:</label>
+                    <input type="date" class="form-control" id="" name="data_criacao">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn" style="background-color: #cbb26b;color: #002c6a; margin-top: 20px;">Cadastrar</button>
+                </div>
+          </form>
+        </div>
+    </div>
+</div>
