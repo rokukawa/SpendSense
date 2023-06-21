@@ -203,9 +203,9 @@ export const getGrafico = async (req, res) => {
     for (const item of value) {
         const { conta, valor } = item;
         if (somaValores[conta]) {
-          somaValores[conta] += valor;
+          somaValores[conta] += parseInt(valor);
         } else {
-          somaValores[conta] = valor;
+          somaValores[conta] = parseInt(valor);
         }
     }
 

@@ -59,11 +59,6 @@ const postTransacao = async (req, res) => {
       mensagem: result.error.message
     });
   } else {
-    const {
-      nome,
-      email,
-      senha
-    } = req.body;
     res.json({
       status: true,
       transacao: await Transacao.save(data, valor, descricao, categoria, conta)

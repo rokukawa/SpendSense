@@ -220,12 +220,14 @@ const getGrafico = async (req, res) => {
       valor
     } = item;
     if (somaValores[conta]) {
-      somaValores[conta] += valor;
+      somaValores[conta] += parseInt(valor);
     } else {
-      somaValores[conta] = valor;
+      somaValores[conta] = parseInt(valor);
     }
   }
   const transacao = Object.values(somaValores);
+  console.log(contas);
+  console.log(transacao);
   res.render('grafico', {
     contas: contas,
     transacao: transacao

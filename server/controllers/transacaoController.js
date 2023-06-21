@@ -39,7 +39,6 @@ export const postTransacao = async (req, res) => {
     if (result.error){
         res.json({status: false, mensagem: result.error.message})
     }else{
-        const {nome, email, senha} = req.body
         res.json({status: true, transacao: await Transacao.save(data, valor, descricao, categoria, conta)})
     }
 }
